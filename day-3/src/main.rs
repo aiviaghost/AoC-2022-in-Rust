@@ -1,17 +1,21 @@
 use std::{collections::HashSet, fs};
 
+fn priority_from_item_type(item_type: u8) -> i32 {
+    (match item_type as char {
+        'a'..='z' => item_type - ('a' as u8) + 1,
+        _ => 26 + item_type - ('A' as u8) + 1,
+    }) as i32
+}
+
 fn solve_1(input: Vec<String>) {
     let ans: i32 = input
         .iter()
         .map(|line| {
             let middle = line.len() / 2;
-            let b1 = &line[0..middle].bytes().collect::<HashSet<_>>();
-            let b2 = &line[middle..line.len()].bytes().collect::<HashSet<_>>();
-            let inter = b1.intersection(b2).next().unwrap();
-            (match *inter as char {
-                'a'..='z' => inter - ('a' as u8) + 1,
-                _ => 26 + inter - ('A' as u8) + 1,
-            }) as i32
+            let s1 = &line[..middle].bytes().collect::<HashSet<_>>();
+            let s2 = &line[middle..].bytes().collect::<HashSet<_>>();
+            let inter = *s1.intersection(s2).next().unwrap();
+            priority_from_item_type(inter)
         })
         .sum();
     println!("{ans}")
@@ -32,10 +36,7 @@ fn solve_2(input: Vec<String>) {
                 .intersection(s3)
                 .next()
                 .unwrap();
-            (match inter as char {
-                'a'..='z' => inter - ('a' as u8) + 1,
-                _ => 26 + inter - ('A' as u8) + 1,
-            }) as i32
+            priority_from_item_type(inter)
         })
         .sum();
     println!("{ans}")
