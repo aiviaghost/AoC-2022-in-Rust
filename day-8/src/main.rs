@@ -19,26 +19,11 @@ fn solve_1(input: Vec<String>) {
     let n = grid.len();
     for i in 1..n - 1 {
         for j in 1..n - 1 {
-            let curr = grid[i][j];
-            let mut visible = false;
-
-            if (0..i).map(|k| grid[k][j]).max().unwrap() < curr {
-                visible = true;
-            }
-
-            if (i + 1..n).map(|k| grid[k][j]).max().unwrap() < curr {
-                visible = true;
-            }
-
-            if (0..j).map(|k| grid[i][k]).max().unwrap() < curr {
-                visible = true;
-            }
-
-            if (j + 1..n).map(|k| grid[i][k]).max().unwrap() < curr {
-                visible = true;
-            }
-
-            if visible {
+            if (0..i).map(|k| grid[k][j]).max().unwrap() < grid[i][j]
+                || (i + 1..n).map(|k| grid[k][j]).max().unwrap() < grid[i][j]
+                || (0..j).map(|k| grid[i][k]).max().unwrap() < grid[i][j]
+                || (j + 1..n).map(|k| grid[i][k]).max().unwrap() < grid[i][j]
+            {
                 ans += 1;
             }
         }
@@ -55,15 +40,13 @@ fn solve_2(input: Vec<String>) {
     let n = grid.len();
     for i in 0..n {
         for j in 0..n {
-            let curr_h = grid[i][j];
-
             let top = {
                 let mut k = 1;
                 loop {
                     if i < k {
                         k -= 1;
                         break;
-                    } else if grid[i - k][j] >= curr_h {
+                    } else if grid[i - k][j] >= grid[i][j] {
                         break;
                     }
                     k += 1;
@@ -77,7 +60,7 @@ fn solve_2(input: Vec<String>) {
                     if i + k >= n {
                         k -= 1;
                         break;
-                    } else if grid[i + k][j] >= curr_h {
+                    } else if grid[i + k][j] >= grid[i][j] {
                         break;
                     }
                     k += 1;
@@ -91,7 +74,7 @@ fn solve_2(input: Vec<String>) {
                     if j < k {
                         k -= 1;
                         break;
-                    } else if grid[i][j - k] >= curr_h {
+                    } else if grid[i][j - k] >= grid[i][j] {
                         break;
                     }
                     k += 1;
@@ -105,7 +88,7 @@ fn solve_2(input: Vec<String>) {
                     if j + k >= n {
                         k -= 1;
                         break;
-                    } else if grid[i][j + k] >= curr_h {
+                    } else if grid[i][j + k] >= grid[i][j] {
                         break;
                     }
                     k += 1;
