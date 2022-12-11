@@ -72,14 +72,12 @@ fn solve_2(input: Vec<String>) {
     let mut x = 1;
     let mut screen_pos: (usize, usize) = (0, 0);
 
-    let mut screen: Vec<Vec<char>> = vec![vec![0 as char; 40]; 6];
+    let mut screen: Vec<Vec<char>> = vec![vec!['.'; 40]; 6];
 
     let mut do_cycle = |x| {
-        screen[screen_pos.1][screen_pos.0] = if overlaps_sprite(screen_pos.0 as i32, x) {
-            '#'
-        } else {
-            '.'
-        };
+        if overlaps_sprite(screen_pos.0 as i32, x) {
+            screen[screen_pos.1][screen_pos.0] = '#';
+        }
         screen_pos = next_screen_pos(screen_pos);
     };
 
