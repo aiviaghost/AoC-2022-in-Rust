@@ -120,10 +120,7 @@ fn solve_1(input: Vec<String>) {
             shape = next;
         }
 
-        loop {
-            if grid[0].contains(&'#') {
-                break;
-            }
+        while !grid[0].contains(&'#') {
             grid.pop_front();
         }
     }
