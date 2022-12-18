@@ -59,22 +59,20 @@ fn solve_1(input: Vec<String>) {
     let sensors = parse_sensors(input);
 
     let ans: i32 = (-5_000_000..5_000_000)
-        .map(|x| query_pos(&sensors, (x, 2000000)) as i32)
+        .map(|x| query_pos(&sensors, (x, 2_000_000)) as i32)
         .sum();
 
     println!("{ans}")
 }
 
-fn trace_sides(sensor: &Sensor) -> HashSet<(i32, i32)> {
-    let mut points = HashSet::new();
+fn trace_sides(sensor: &Sensor) -> Vec<(i32, i32)> {
     let beacon_dist = manhattan_dist(sensor.pos, sensor.closest_beacon);
-    let mut p = (sensor.pos.0, sensor.pos.1 + beacon_dist + 1);
+    let top = (sensor.pos.0, sensor.pos.1 + beacon_dist + 1);
+    let mut points = vec![top];
+    let mut p = (sensor.pos.0 - 1, sensor.pos.1 + beacon_dist);
     let mut dir = (-1, -1);
-    loop {
-        if points.contains(&p) {
-            break;
-        }
-        points.insert(p);
+    while p != top {
+        points.push(p);
         let next = (p.0 + dir.0, p.1 + dir.1);
         if manhattan_dist(sensor.pos, next) > beacon_dist + 1 {
             dir = match dir {
